@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { CategoryType } from "@/types/type";
 import { Colors } from "@/constants/Colors";
+import FlashSale from "./FlashSale";
 
 type Props = {
   categories: CategoryType[];
@@ -16,13 +17,15 @@ type Props = {
 
 const Categories = ({ categories }: Props) => {
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.titleWrapper}>
         <Text style={styles.title}>Categories</Text>
+
         <TouchableOpacity>
           <Text style={styles.titleBtn}>See All</Text>
         </TouchableOpacity>
       </View>
+
       <FlatList
         data={categories}
         horizontal
@@ -44,10 +47,17 @@ const Categories = ({ categories }: Props) => {
 export default Categories;
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
   titleWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginHorizontal: 20,
+  },
+  timerWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   title: {
     fontSize: 18,
@@ -71,6 +81,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 30,
-    color: Colors.gray,
+    color: Colors.lightGray,
   },
 });

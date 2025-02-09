@@ -4,6 +4,9 @@ import {
   StyleSheet,
   Text,
   View,
+  ActivityIndicator,
+  Image,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -14,15 +17,18 @@ import { Colors } from "@/constants/Colors";
 import ProductList from "@/components/ProductList";
 import { CategoryType, ProductType } from "@/types/type";
 import Categories from "@/components/Categories";
+import FlashSale from "@/components/FlashSale";
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [saleProducts, setSaleProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     getCategories();
+    getSaleProducts();
     getProducts();
   }, []);
 
@@ -34,6 +40,14 @@ const HomeScreen = (props: Props) => {
     setIsLoading(false);
   };
 
+  const getSaleProducts = async () => {
+    const URL = `http://localhost:8000/saleProducts`;
+    const response = await axios.get(URL);
+    //console.log(response.data);
+    setSaleProducts(response.data);
+    setIsLoading(false);
+  };
+
   const getCategories = async () => {
     const URL = `http://localhost:8000/categories`;
     const response = await axios.get(URL);
@@ -41,6 +55,14 @@ const HomeScreen = (props: Props) => {
     setCategories(response.data);
     setIsLoading(false);
   };
+
+  if (isLoading) {
+    return (
+      <View>
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -50,8 +72,17 @@ const HomeScreen = (props: Props) => {
           header: () => <Header />,
         }}
       />
-      <Categories categories={categories} />
-      <ProductList products={products} />
+      <ScrollView>
+        <Categories categories={categories} />
+        <FlashSale products={saleProducts} />
+        <View style={{ marginHorizontal: 20, marginBottom: 10 }}>
+          <Image
+            source={require("@/assets/images/sale-banner.jpg")}
+            style={{ width: "100%", height: 150, borderRadius: 15 }}
+          />
+        </View>
+        <ProductList products={products} flatlist={false} />
+      </ScrollView>
     </>
   );
 };
