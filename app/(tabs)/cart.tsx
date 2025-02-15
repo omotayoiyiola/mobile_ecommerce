@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 10,
   },
-  itemInfoWrapper: {
+  itemInfoWrappers: {
     flex: 1,
     alignSelf: "flex-start",
     gap: 10,
