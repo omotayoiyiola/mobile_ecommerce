@@ -13,6 +13,7 @@ import { Stack } from "expo-router";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 type Props = {};
 
@@ -37,7 +38,13 @@ const CartScreen = ({ item }: { item: CartItemType }) => {
           data={cartItems}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => <CartItem item={item} />}
+          renderItem={({ item, index }) => (
+            <Animated.View
+              entering={FadeInDown.delay(300 + index * 100).duration(500)}
+            >
+              <CartItem item={item} />
+            </Animated.View>
+          )}
         />
       </View>
       <View style={styles.footer}>
@@ -58,7 +65,7 @@ const CartItem = ({ item }: { item: CartItemType }) => {
       <Image source={{ uri: item.image }} style={styles.itemImg} />
       <View style={styles.itemInfoWrapper}>
         <Text style={styles.itemText}>{item.title}</Text>
-        <Text style={styles.itemText}></Text>
+        <Text style={styles.itemText}>${item.price}</Text>
         <View style={styles.itemControlWrapper}>
           <TouchableOpacity>
             <Ionicons name="trash-outline" size={20} color={"red"} />
